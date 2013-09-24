@@ -1,0 +1,6 @@
+#!/bin/bash
+
+function rgb2bin() {
+    TXT_FILE=$1
+    echo ${TXT_FILE}
+}

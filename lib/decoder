@@ -1,9 +1,5 @@
 #!/bin/bash
 
-rm -rf tmp 2>/dev/null
-mkdir tmp 2>/dev/null
-cd tmp
-
 function split_gif() {
     ANIMATED=$1
     convert ../$ANIMATED -scene 1 +adjoin frame_%04d.gif
@@ -30,10 +26,24 @@ function get_rgb_for() {
         sed -e 's,#.*$,,'
 }
 
-split_gif pacman.gif
-for F in `ls -1 | grep frame_`
-do
-    scale_down $F
-    get_rgb_for TRIMMED_$F >> RGB_VALS.txt
-done
+function get_image_dimensions() {
 
+    F=tmp/TRIMMED_frame_0001.gif
+    IMG_DIMENSIONS=$(identify -verbose $F | \
+        grep Geometry | \
+        cut -d':' -f2 | \
+        cut -d'+' -f1 | \
+        sed -e 's, ,,g')
+    echo ${IMG_DIMENSIONS}
+}
+function get_image_width() {
+    IMG_X=$(get_image_dimensions | \
+        cut -d'x' -f1)
+    echo ${IMG_X}
+}
+
+function get_image_height() {
+    IMG_Y=$(get_image_dimensions | \
+        cut -d'x' -f2)
+    echo ${IMG_Y}
+}
