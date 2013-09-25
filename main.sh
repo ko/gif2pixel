@@ -9,6 +9,7 @@ BIN_OUT=${BASEDIR}/outfile.bin
 
 LIB_DIR=${BASEDIR}/lib
 
+rm ${RGB_TXT}
 rm -rf tmp 2>/dev/null
 mkdir tmp 2>/dev/null
 cd ${BASEDIR}/tmp

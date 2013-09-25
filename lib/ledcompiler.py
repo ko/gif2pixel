@@ -3,7 +3,7 @@
 import re
 import array
 
-class PixelMap:
+class Frame:
 
     def __init__(self):
         self.pixels = [];
@@ -118,28 +118,31 @@ def setupHeader():
     out = array.array('B')
     out.append(0)
     out.append(50)
+    out.append(8)
     out.append(0)
     out.append(4)
     out.append(0)
-    out.append(8)
     return out
 
-def parseLine(pmap, line):
+def parseLine(frame, line):
     if line.strip():
         tuple = line.partition(':')
-        pmap.addPixel(tuple[0],tuple[2])
+        frame.addPixel(tuple[0],tuple[2])
+        return True
     else:
-        pmap.newFrame()
+        return False
 
 def rgb2bin(txt_file,out_file):
-    pmap = PixelMap()
+    frames = []
+    frame = Frame()
     with open(txt_file, 'rw') as f:
         for line in f:
-            parseLine(pmap,line)
-    print pmap.toString()
+            if not parseLine(frame,line):
+                frames.append(frame)
     f = file(out_file, 'wb')
     output = setupHeader()
-    output += pmap.toString(True)
+    for frame in frames:
+        output += frame.toString(True)
     output.tofile(f)
     f.close()
 
