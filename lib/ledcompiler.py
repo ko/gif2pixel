@@ -43,16 +43,28 @@ class Frame:
         ------------>   #2
         ------------>x  #3
         """
-        for i in range(0,8):
-            for j in range(3,-1,-1):
-                pixel = self.getPixel(i,j)
-                if pixel is not None:
-                    if binary is True:
-                        out.append(int(pixel.toBinaryString()[0],2))
-                        out.append(int(pixel.toBinaryString()[1],2))
-                        out.append(int(pixel.toBinaryString()[2],2))
-                    else:
-                        out.append(pixel.toString())
+        for j in range(3,-1,-1):
+            if j % 2 == 0:
+                for i in range(0,8):
+                    pixel = self.getPixel(i,j)
+                    if pixel is not None:
+                        if binary is True:
+                            out.append(int(pixel.toBinaryString()[0],2))
+                            out.append(int(pixel.toBinaryString()[1],2))
+                            out.append(int(pixel.toBinaryString()[2],2))
+                        else:
+                            out.append(pixel.toString())
+            else:
+                for i in range(7,-1,-1):
+                    pixel = self.getPixel(i,j)
+                    if pixel is not None:
+                        if binary is True:
+                            out.append(int(pixel.toBinaryString()[0],2))
+                            out.append(int(pixel.toBinaryString()[1],2))
+                            out.append(int(pixel.toBinaryString()[2],2))
+                        else:
+                            out.append(pixel.toString())
+
         if binary is True:
             return out
         else:
