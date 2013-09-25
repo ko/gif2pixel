@@ -40,7 +40,7 @@ class Frame:
         # dimensions here
         """
        o------------>   #1 
-        ------------>   #2
+        <------------   #2
         ------------>x  #3
         """
         for j in range(3,-1,-1):
@@ -144,6 +144,15 @@ def parseLine(frame, line):
     else:
         return False
 
+def writeFile(frames,out_file):
+    f = file(out_file, 'wb')
+    output = setupHeader()
+    for frame in frames:
+        print 'Add frame'
+        output += frame.toString(True)
+    output.tofile(f)
+    f.close()
+
 def rgb2bin(txt_file,out_file):
     frames = []
     frame = Frame()
@@ -153,11 +162,5 @@ def rgb2bin(txt_file,out_file):
                 if not frame.isEmpty():
                     frames.append(frame)
                     frame = Frame()
-    f = file(out_file, 'wb')
-    output = setupHeader()
-    for frame in frames:
-        print 'Add frame'
-        output += frame.toString(True)
-    output.tofile(f)
-    f.close()
+    writeFile(frames,out_file)
 
