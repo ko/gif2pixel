@@ -1,0 +1,4 @@
+*.pyc
+*.bin
+tmp/
+RGB_VALS.txt
