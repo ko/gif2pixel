@@ -1,15 +1,17 @@
 #!/bin/bash
 
 . lib/decoder
-. lib/ledcompiler
 
+BASEDIR=`pwd`
 
-RGB_TXT=RGB_VALS.txt
+RGB_TXT=${BASEDIR}/RGB_VALS.txt
+BIN_OUT=${BASEDIR}/outfile.bin
 
+LIB_DIR=${BASEDIR}/lib
 
 rm -rf tmp 2>/dev/null
 mkdir tmp 2>/dev/null
-cd tmp
+cd ${BASEDIR}/tmp
 
 
 split_gif pacman.gif
@@ -19,4 +21,10 @@ do
     get_rgb_for TRIMMED_$F >> ${RGB_TXT}
 done
 
-rgb2bin ${RGB_TXT}
+cd $LIB_DIR
+
+python -c 'import ledcompiler; \
+    ledcompiler.rgb2bin(\
+        "../RGB_VALS.txt", \
+        "../outfile.bin"\
+    )'
