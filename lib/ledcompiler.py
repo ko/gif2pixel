@@ -19,8 +19,11 @@ class PixelMap:
         self.pixels.append(pixel)
 
     def newFrame(self):
+        print "Found new frame"
+        """
         if self.pixels is not None:
             self.pixels.append(Pixel())
+        """
 
     def getPixel(self, x, y):
         # lol so bad
@@ -103,13 +106,23 @@ class Pixel:
         out.append(self.getG())
         out.append(self.getB())
         return ''.join(out)
-   
+
     def toBinaryString(self):
         out = []
         out.append(str(self.getBinaryR()))
         out.append(str(self.getBinaryG()))
         out.append(str(self.getBinaryB()))
         return out
+
+def setupHeader():
+    out = array.array('B')
+    out.append(0)
+    out.append(50)
+    out.append(0)
+    out.append(4)
+    out.append(0)
+    out.append(8)
+    return out
 
 def parseLine(pmap, line):
     if line.strip():
@@ -125,6 +138,8 @@ def rgb2bin(txt_file,out_file):
             parseLine(pmap,line)
     print pmap.toString()
     f = file(out_file, 'wb')
-    pmap.toString(True).tofile(f)
+    output = setupHeader()
+    output += pmap.toString(True)
+    output.tofile(f)
     f.close()
 
