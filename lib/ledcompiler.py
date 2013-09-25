@@ -7,8 +7,12 @@ class Frame:
 
     def __init__(self):
         self.pixels = [];
+        self.empty = True
 
     def addPixel(self, xy, rgb):
+        # flag
+        self.empty = False
+
         pixel = Pixel()
         tuple = xy.split(',')
         pixel.setXY(tuple)
@@ -18,12 +22,8 @@ class Frame:
         pixel.setRGB(tuple)
         self.pixels.append(pixel)
 
-    def newFrame(self):
-        print "Found new frame"
-        """
-        if self.pixels is not None:
-            self.pixels.append(Pixel())
-        """
+    def isEmpty(self):
+        return self.empty
 
     def getPixel(self, x, y):
         # lol so bad
@@ -44,7 +44,7 @@ class Frame:
         ------------>x  #3
         """
         for j in range(3,-1,-1):
-            if j % 2 == 0:
+            if j % 2 == 1:
                 for i in range(0,8):
                     pixel = self.getPixel(i,j)
                     if pixel is not None:
@@ -150,10 +150,13 @@ def rgb2bin(txt_file,out_file):
     with open(txt_file, 'rw') as f:
         for line in f:
             if not parseLine(frame,line):
-                frames.append(frame)
+                if not frame.isEmpty():
+                    frames.append(frame)
+                    frame = Frame()
     f = file(out_file, 'wb')
     output = setupHeader()
     for frame in frames:
+        print 'Add frame'
         output += frame.toString(True)
     output.tofile(f)
     f.close()
